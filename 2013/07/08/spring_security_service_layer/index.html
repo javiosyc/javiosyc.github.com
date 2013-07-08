@@ -3,18 +3,16 @@
 <head>
   <meta charset="utf-8">
   
-  <title>jslt application init-param | javio's Blog</title>
+  <title>spring_security_service_layer | javio's Blog</title>
   <meta name="author" content="javio">
   
-  <meta name="description" content="1.jstl的if-else
-        &lt;c:choose&gt;
-            &lt;c:when test=&quot;${initParam['loginStrategy']=='openId'}&quot;&gt;
-            &lt;jsp:include page=&quot;/W">
+  <meta name="description" content="security.xml
+1.">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="jslt application init-param"/>
+  <meta property="og:title" content="spring_security_service_layer"/>
   <meta property="og:site_name" content="javio's Blog"/>
 
   
@@ -53,40 +51,18 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2013-07-06T12:33:31.000Z"><a href="/2013/07/06/jslt-application-init-param/">7月 6 2013</a></time>
+        <time datetime="2013-07-08T03:03:47.000Z"><a href="/2013/07/08/spring_security_service_layer/">7月 8 2013</a></time>
       
       
   
-    <h1 class="title">jslt application init-param</h1>
+    <h1 class="title">spring_security_service_layer</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>1.jstl的if-else</p>
-<pre><code><figure class="highlight"><pre><span class="xml">        <span class="tag">&lt;<span class="title">c:choose</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">c:when</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${initParam</span><span class="xml">['loginStrategy']=='openId'}"&gt;
-            <span class="tag">&lt;<span class="title">jsp:include</span> <span class="attribute">page</span>=<span class="value">"/WEB-INF/jsp/topLoginButton4OpenId.jsp"</span>/&gt;</span>
-            <span class="tag">&lt;/<span class="title">c:when</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">c:otherwise</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">jsp:include</span> <span class="attribute">page</span>=<span class="value">"/WEB-INF/jsp/topLoginButton.jsp"</span>/&gt;</span>
-            <span class="tag">&lt;/<span class="title">c:otherwise</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">c:choose</span>&gt;</span></span>
-</pre></figure></code></pre>
-<p>2.EL取得initParam
-    web.xml</p>
-<pre><code><figure class="highlight"><pre>    <span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
-        <span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">......</span>
-        <span class="attribute">...</span>    
-            &lt;<span class="attribute">context-param</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>loginStrategy<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>openId<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">context-param</span>&gt;</span> 
-        ...
-        <span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
-</pre></figure></code></pre>
-<p>--&gt;    ${initParam[&#39;loginStrategy&#39;]
-    &lt;%=application.getInitParameter(&quot;loginStrategy&quot;)%&gt;</p>
+        <p>security.xml
+1.<security:global-method-security secured-annotations="enabled" /></p>
 
       
     </div>
@@ -95,13 +71,13 @@
         
   
   <div class="categories">
-    <a href="/categories/jstl/">jstl</a>
+    <a href="/categories/spring/">spring</a>
   </div>
 
         
   
   <div class="tags">
-    <a href="/tags/jstl/">jstl</a>
+    <a href="/tags/spring_security/">spring_security</a>, <a href="/tags/spring-1/">spring</a>
   </div>
 
         

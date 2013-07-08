@@ -3,18 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>jslt application init-param | javio's Blog</title>
+  <title>spring_security_note | javio's Blog</title>
   <meta name="author" content="javio">
   
-  <meta name="description" content="1.jstl的if-else
-        &lt;c:choose&gt;
-            &lt;c:when test=&quot;${initParam['loginStrategy']=='openId'}&quot;&gt;
-            &lt;jsp:include page=&quot;/W">
+  <meta name="description" content="Spring security
+    (1) uses Spring Security to access our current user.
+            The Authentication object represents all the information we gathe">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="jslt application init-param"/>
+  <meta property="og:title" content="spring_security_note"/>
   <meta property="og:site_name" content="javio's Blog"/>
 
   
@@ -53,40 +52,42 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2013-07-06T12:33:31.000Z"><a href="/2013/07/06/jslt-application-init-param/">7月 6 2013</a></time>
+        <time datetime="2013-07-08T01:49:11.000Z"><a href="/2013/07/08/spring_security_note/">7月 8 2013</a></time>
       
       
   
-    <h1 class="title">jslt application init-param</h1>
+    <h1 class="title">spring_security_note</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>1.jstl的if-else</p>
-<pre><code><figure class="highlight"><pre><span class="xml">        <span class="tag">&lt;<span class="title">c:choose</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">c:when</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${initParam</span><span class="xml">['loginStrategy']=='openId'}"&gt;
-            <span class="tag">&lt;<span class="title">jsp:include</span> <span class="attribute">page</span>=<span class="value">"/WEB-INF/jsp/topLoginButton4OpenId.jsp"</span>/&gt;</span>
-            <span class="tag">&lt;/<span class="title">c:when</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">c:otherwise</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">jsp:include</span> <span class="attribute">page</span>=<span class="value">"/WEB-INF/jsp/topLoginButton.jsp"</span>/&gt;</span>
-            <span class="tag">&lt;/<span class="title">c:otherwise</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">c:choose</span>&gt;</span></span>
+        <p>Spring security
+    (1) uses Spring Security to access our current user.
+            The Authentication object represents all the information we gathered at the time of authentication (username,password, roles, and so on).</p>
+<pre><code><figure class="highlight"><pre>            String username = SecurityContextHolder<span class="preprocessor">.getContext</span>()          //o<span class="preprocessor">.s</span><span class="preprocessor">.s</span><span class="preprocessor">.core</span><span class="preprocessor">.context</span><span class="preprocessor">.SecurityContext</span>
+                                                   <span class="preprocessor">.getAuthentication</span>() //o<span class="preprocessor">.s</span><span class="preprocessor">.s</span><span class="preprocessor">.core</span><span class="preprocessor">.Authentication</span>
+                                                   <span class="preprocessor">.getName</span>()<span class="comment">;            //login user name</span>
+
+
+            ===============================================================
+
+            SecurityContext context = SecurityContextHolder<span class="preprocessor">.getContext</span>()<span class="comment">;</span>
+            Authentication authentication = context<span class="preprocessor">.getAuthentication</span>()<span class="comment">;</span>
+            if (authentication == null) {
+                return null<span class="comment">;</span>
+            }
+            String email = authentication<span class="preprocessor">.getName</span>()<span class="comment">;</span>
+            return calendarService<span class="preprocessor">.findUserByEmail</span>(email)<span class="comment">;</span>
+
+
+        note:It should be noted that null checks should always be done on the Authentication object, 
+             as it could be null if the user is not logged <span class="keyword">in</span>.
+
+
+            ===============================================================
+            User user = (User)SecurityContextHolder<span class="preprocessor">.getContext</span>()<span class="preprocessor">.getAuthentication</span>()<span class="preprocessor">.getPrincipal</span>()<span class="comment">;</span>
 </pre></figure></code></pre>
-<p>2.EL取得initParam
-    web.xml</p>
-<pre><code><figure class="highlight"><pre>    <span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
-        <span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">......</span>
-        <span class="attribute">...</span>    
-            &lt;<span class="attribute">context-param</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>loginStrategy<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>openId<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">context-param</span>&gt;</span> 
-        ...
-        <span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
-</pre></figure></code></pre>
-<p>--&gt;    ${initParam[&#39;loginStrategy&#39;]
-    &lt;%=application.getInitParameter(&quot;loginStrategy&quot;)%&gt;</p>
 
       
     </div>
@@ -95,13 +96,13 @@
         
   
   <div class="categories">
-    <a href="/categories/jstl/">jstl</a>
+    <a href="/categories/spring/">spring</a>
   </div>
 
         
   
   <div class="tags">
-    <a href="/tags/jstl/">jstl</a>
+    <a href="/tags/spring_security/">spring_security</a>, <a href="/tags/spring-1/">spring</a>
   </div>
 
         

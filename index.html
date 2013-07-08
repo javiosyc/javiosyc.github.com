@@ -49,6 +49,404 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-07-08T06:32:08.000Z"><a href="/2013/07/08/spring_security_filter_2/">7月 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/07/08/spring_security_filter_2/">logoutFilter</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>1.notices that the URL that is being requested is for logout</p>
+<p>2.The filter calls the configured LogoutHandle(implement the LogoutHandler interface)
+    SecurityContextLogoutHandler
+        invalidates the Servlet session, in the standard Servlet way, calling the invalidate method
+        on the HttpSession object and also clearing the SecurityContext from Spring Security
+        (JSESSIONID cookie not clear)
+    TokenBasedRememberMeServices
+        removes the remember-me cookie by setting its age to 0.</p>
+<pre><code><figure class="highlight"><pre>JSESSIONID cookie 
+        <span class="tag">&lt;<span class="title">security:http</span>&gt;</span>
+        ....
+        <span class="tag">&lt;<span class="title">security:logout</span> <span class="attribute">delete-cookies</span>=<span class="value">"JSESSIONID"</span>/&gt;</span>.
+        ...
+        <span class="tag">&lt;/<span class="title">security:http</span>&gt;</span>
+
+To enable the CookieClearingLogoutHandler handler (removes cookies)
+</pre></figure></code></pre>
+<p>3.calls the LogoutSuccessHandler’s onLogoutSuccess method
+            in the default configuration, redirects to a target URL
+            The target URL ( default the root of the application) can be configured using </p>
+<pre><code><figure class="highlight"><pre>        request parameter 
+            <span class="tag">&lt;<span class="title">security:logout</span> <span class="attribute">logout-success-url</span>=<span class="value">"/index"</span> /&gt;</span>
+
+        the referrer header from the request
+
+            <span class="tag">&lt;<span class="title">security:logout</span> <span class="attribute">delete-cookies</span>=<span class="value">"JSESSIONID"</span> <span class="attribute">success-handler-ref</span>=<span class="value">"logoutRedirectToAny"</span>/&gt;</span>
+            ...
+            <span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"logoutRedirectToAny"</span> 
+            <span class="attribute">class</span>=<span class="value">"org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler"</span>&gt;</span>
+            <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"targetUrlParameter"</span> <span class="attribute">value</span>=<span class="value">"redirectTo"</span>/&gt;</span>
+            <span class="tag">&lt;/<span class="title">bean</span>&gt;</span>
+
+            request the following URL
+            /j_spring_security_logout?redirectTo=http://www.google.com
+            You will be logged out and redirected to Google
+
+            The current implementation LogoutSuccessHandler (SimpleUrlLogoutSuccessHandler) 
+            extends from AbstractAuthenticationTargetUrlRequestHandler, which is also used by 
+            the authentication process to redirect to a determined URL after authenticating successfully
+</pre></figure></code></pre>
+<p>LogoutFilter extends GenericFilterBean</p>
+<pre><code><figure class="highlight"><pre>        ....
+        <span class="keyword">private</span> String filterProcessesUrl = <span class="string">"/j_spring_security_logout"</span>;
+        <span class="keyword">private</span> final List&lt;LogoutHandler&gt; handlers;
+        <span class="keyword">private</span> final LogoutSuccessHandler logoutSuccessHandler;
+        ...
+
+        <span class="keyword">public</span> <span class="keyword">void</span> doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+                                    throws IOException, ServletException {
+            HttpServletRequest request = (HttpServletRequest) req;
+            HttpServletResponse response = (HttpServletResponse) res;
+
+
+            <span class="comment">//if the request's URL is /j_spring_security_logout</span>
+            <span class="keyword">if</span> (requiresLogout(request, response)) {
+                Authentication auth = SecurityContextHolder<span class="variable">.getContext</span>()<span class="variable">.getAuthentication</span>();
+
+                <span class="keyword">if</span> (logger<span class="variable">.isDebugEnabled</span>()) {
+                    logger<span class="variable">.debug</span>(<span class="string">"Logging out user '"</span> + auth + <span class="string">"' and transferring to logout destination"</span>);
+                }
+
+                <span class="keyword">for</span> (LogoutHandler handler : handlers) {
+                    handler<span class="variable">.logout</span>(request, response, auth);
+                }
+
+                logoutSuccessHandler<span class="variable">.onLogoutSuccess</span>(request, response, auth);
+                <span class="keyword">return</span>;
+            }
+
+            chain<span class="variable">.doFilter</span>(request, response);
+        }
+
+        ....
+
+
+         <span class="keyword">protected</span> boolean requiresLogout(HttpServletRequest request, HttpServletResponse response) {
+
+             String uri = request<span class="variable">.getRequestURI</span>();
+             <span class="keyword">int</span> pathParamIndex = uri<span class="variable">.indexOf</span>(<span class="string">';'</span>);
+
+             <span class="keyword">if</span> (pathParamIndex &gt; <span class="number">0</span>) {
+            <span class="comment">// strip everything from the first semi-colon</span>
+            uri = uri<span class="variable">.substring</span>(<span class="number">0</span>, pathParamIndex);
+            }
+
+            <span class="keyword">int</span> queryParamIndex = uri<span class="variable">.indexOf</span>(<span class="string">'?'</span>);
+
+            <span class="keyword">if</span> (queryParamIndex &gt; <span class="number">0</span>) {
+
+            <span class="comment">// strip everything from the first question mark</span>
+            uri = uri<span class="variable">.substring</span>(<span class="number">0</span>, queryParamIndex);
+            }
+
+            <span class="keyword">if</span> (<span class="string">""</span><span class="variable">.equals</span>(request<span class="variable">.getContextPath</span>())) {
+                <span class="keyword">return</span> uri<span class="variable">.endsWith</span>(filterProcessesUrl);
+            }
+
+            <span class="keyword">return</span> uri<span class="variable">.endsWith</span>(request<span class="variable">.getContextPath</span>() + filterProcessesUrl);
+        }
+</pre></figure></code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-07-08T05:49:34.000Z"><a href="/2013/07/08/spring_security_filter_1/">7月 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/07/08/spring_security_filter_1/">SecurityContextPersistenceFilter</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>The first security filter that gets hit by the request is SecurityContextPersistenceFilter.</li>
+<li>When the request hits this filter, the framework tries to retrieve a SecurityContext from the standard Servlet session 
+(javax.servlet.http.HttpSession).</li>
+<li><p>If there is not a context in the session, or the session itself is null (that is, it still doesn’t exist because it hasn’t been
+created yet), the framework creates a new empty SecurityContext(or, more accurately, an instance of its implementation class SecurityContextImpl).</p>
+</li>
+<li><p>A new SecurityContext is created and associated to the current thread of execution.</p>
+</li>
+</ul>
+<p>SecurityContextPersistenceFilter</p>
+<pre><code><figure class="highlight"><pre>      ....
+
+      static final String FILTER_APPLIED = <span class="string">"__spring_security_scpf_applied"</span><span class="comment">;</span>
+
+      private SecurityContextRepository repo<span class="comment">;</span>
+
+      private boolean forceEagerSessionCreation = false<span class="comment">;</span>
+
+      .....
+
+
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)    throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req<span class="comment">;</span>
+        HttpServletResponse response = (HttpServletResponse) res<span class="comment">;</span>
+
+        if (request<span class="preprocessor">.getAttribute</span>(FILTER_APPLIED) != null) {
+            // ensure that filter is only applied once per request
+            chain<span class="preprocessor">.doFilter</span>(request, response)<span class="comment">;</span>
+            return<span class="comment">;</span>
+        }
+
+        final boolean debug = logger<span class="preprocessor">.isDebugEnabled</span>()<span class="comment">;</span>
+
+        request<span class="preprocessor">.setAttribute</span>(FILTER_APPLIED, Boolean<span class="preprocessor">.TRUE</span>)<span class="comment">;</span>
+
+
+        if (forceEagerSessionCreation) {
+            HttpSession session = request<span class="preprocessor">.getSession</span>()<span class="comment">;</span>
+
+            if (debug &amp;&amp; session<span class="preprocessor">.isNew</span>()) {
+                logger<span class="preprocessor">.debug</span>(<span class="string">"Eagerly created session: "</span> + session<span class="preprocessor">.getId</span>())<span class="comment">;</span>
+            }
+        }
+
+        HttpRequestResponseHolder holder = new HttpRequestResponseHolder(request, response)<span class="comment">;</span>
+
+        //repo<span class="preprocessor">.loadContext</span>(holder) 
+        <span class="comment">/*retrieve a SecurityContext from the standard Servlet session (javax.servlet.http.HttpSession).
+          If there is not a context in the session, or the session itself is null (that is, it still doesn’t exist because it
+          hasn’t been created yet), the framework creates a new empty SecurityContext(or, more accurately, an instance of its
+          implementation class SecurityContextImpl).
+        */</span>
+
+
+        SecurityContext contextBeforeChainExecution = repo<span class="preprocessor">.loadContext</span>(holder)<span class="comment">;</span>
+
+        try {
+            SecurityContextHolder<span class="preprocessor">.setContext</span>(contextBeforeChainExecution)<span class="comment">;</span>
+
+            chain<span class="preprocessor">.doFilter</span>(holder<span class="preprocessor">.getRequest</span>(), holder<span class="preprocessor">.getResponse</span>())<span class="comment">;</span>
+
+        } finally {
+            SecurityContext contextAfterChainExecution = SecurityContextHolder<span class="preprocessor">.getContext</span>()<span class="comment">;</span>
+            // Crucial removal of SecurityContextHolder contents - do this before anything else.
+            SecurityContextHolder<span class="preprocessor">.clearContext</span>()<span class="comment">;</span>
+            repo<span class="preprocessor">.saveContext</span>(contextAfterChainExecution, holder<span class="preprocessor">.getRequest</span>(), holder<span class="preprocessor">.getResponse</span>())<span class="comment">;</span>
+            request<span class="preprocessor">.removeAttribute</span>(FILTER_APPLIED)<span class="comment">;</span>
+
+            if (debug) {
+                logger<span class="preprocessor">.debug</span>(<span class="string">"SecurityContextHolder now cleared, as request processing completed"</span>)<span class="comment">;</span>
+            }
+        }
+    }
+</pre></figure></code></pre>
+<p>HttpSessionSecurityContextRepository implements SecurityContextRepository</p>
+<pre><code><figure class="highlight"><pre>        ....
+        <span class="keyword">private</span> String springSecurityContextKey = SPRING_SECURITY_CONTEXT_KEY;
+        ....
+
+        <span class="keyword">public</span> SecurityContext loadContext(HttpRequestResponseHolder requestResponseHolder) {
+
+               HttpServletRequest request = requestResponseHolder.getRequest();
+               HttpServletResponse response = requestResponseHolder.getResponse();
+               HttpSession httpSession = request.getSession(<span class="literal">false</span>);
+
+               SecurityContext context = readSecurityContextFromSession(httpSession);
+
+               <span class="keyword">if</span> (context == <span class="literal">null</span>) {
+                   <span class="keyword">if</span> (logger.isDebugEnabled()) {
+                       logger.<span class="keyword">debug</span>(<span class="string">"No SecurityContext was available from the HttpSession: "</span> + httpSession +<span class="string">". "</span> +
+                       <span class="string">"A new one will be created."</span>);
+                   }
+                   context = generateNewContext();
+               }
+
+               requestResponseHolder.setResponse(<span class="keyword">new</span> SaveToSessionResponseWrapper(response, request, httpSession != <span class="literal">null</span>, context));
+               <span class="keyword">return</span> context;
+        }
+
+
+
+
+
+        <span class="keyword">private</span> SecurityContext readSecurityContextFromSession(HttpSession httpSession) {
+
+            <span class="keyword">final</span> boolean <span class="keyword">debug</span> = logger.isDebugEnabled();
+
+            <span class="keyword">if</span> (httpSession == <span class="literal">null</span>) {
+                <span class="keyword">if</span> (<span class="keyword">debug</span>) {
+                    logger.<span class="keyword">debug</span>(<span class="string">"No HttpSession currently exists"</span>);
+                }
+                <span class="keyword">return</span> <span class="literal">null</span>;
+            }
+
+            <span class="comment">// Session exists, so try to obtain a context from it.</span>
+
+            Object contextFromSession = httpSession.getAttribute(springSecurityContextKey);
+
+
+            <span class="keyword">if</span> (contextFromSession == <span class="literal">null</span>) {
+                <span class="keyword">if</span> (<span class="keyword">debug</span>) {
+                    logger.<span class="keyword">debug</span>(<span class="string">"HttpSession returned null object for SPRING_SECURITY_CONTEXT"</span>);
+                    }
+                <span class="keyword">return</span> <span class="literal">null</span>;
+                }
+
+                <span class="comment">// We now have the security context object from the session.</span>
+                <span class="keyword">if</span> (!(contextFromSession instanceof SecurityContext)) {
+                    <span class="keyword">if</span> (logger.isWarnEnabled()) {
+                        logger.warn(springSecurityContextKey + <span class="string">" did not contain a SecurityContext but contained: '"</span>
+                        + contextFromSession + <span class="string">"'; are you improperly modifying the HttpSession directly "</span>
+                        + <span class="string">"(you should always use SecurityContextHolder) or using the HttpSession attribute "</span>
+                        + <span class="string">"reserved for this class?"</span>);
+                        }
+                    <span class="keyword">return</span> <span class="literal">null</span>;
+                }
+
+            <span class="keyword">if</span> (<span class="keyword">debug</span>) {
+                logger.<span class="keyword">debug</span>(<span class="string">"Obtained a valid SecurityContext from "</span> + springSecurityContextKey + <span class="string">": '"</span> + contextFromSession + <span class="string">"'"</span>);
+            }
+
+            <span class="comment">// Everything OK. The only non-null return from this method.</span>
+            <span class="keyword">return</span> (SecurityContext) contextFromSession;
+        }
+</pre></figure></code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-07-08T03:03:47.000Z"><a href="/2013/07/08/spring_security_service_layer/">7月 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/07/08/spring_security_service_layer/">spring_security_service_layer</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>security.xml
+1.<security:global-method-security secured-annotations="enabled" /></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-07-08T01:49:11.000Z"><a href="/2013/07/08/spring_security_note/">7月 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/07/08/spring_security_note/">spring_security_note</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Spring security
+    (1) uses Spring Security to access our current user.
+            The Authentication object represents all the information we gathered at the time of authentication (username,password, roles, and so on).</p>
+<pre><code><figure class="highlight"><pre>            String username = SecurityContextHolder<span class="preprocessor">.getContext</span>()          //o<span class="preprocessor">.s</span><span class="preprocessor">.s</span><span class="preprocessor">.core</span><span class="preprocessor">.context</span><span class="preprocessor">.SecurityContext</span>
+                                                   <span class="preprocessor">.getAuthentication</span>() //o<span class="preprocessor">.s</span><span class="preprocessor">.s</span><span class="preprocessor">.core</span><span class="preprocessor">.Authentication</span>
+                                                   <span class="preprocessor">.getName</span>()<span class="comment">;            //login user name</span>
+
+
+            ===============================================================
+
+            SecurityContext context = SecurityContextHolder<span class="preprocessor">.getContext</span>()<span class="comment">;</span>
+            Authentication authentication = context<span class="preprocessor">.getAuthentication</span>()<span class="comment">;</span>
+            if (authentication == null) {
+                return null<span class="comment">;</span>
+            }
+            String email = authentication<span class="preprocessor">.getName</span>()<span class="comment">;</span>
+            return calendarService<span class="preprocessor">.findUserByEmail</span>(email)<span class="comment">;</span>
+
+
+        note:It should be noted that null checks should always be done on the Authentication object, 
+             as it could be null if the user is not logged <span class="keyword">in</span>.
+
+
+            ===============================================================
+            User user = (User)SecurityContextHolder<span class="preprocessor">.getContext</span>()<span class="preprocessor">.getAuthentication</span>()<span class="preprocessor">.getPrincipal</span>()<span class="comment">;</span>
+</pre></figure></code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-07-06T23:56:55.000Z"><a href="/2013/07/07/spring_security_simple_example/">7月 7 2013</a></time>
       
       
@@ -94,7 +492,8 @@ securiy.xml
                         authentication-failure-url="/login/form?error"
 
                         <span class="comment">&lt;!-- default-target-url will be the context root of the application 
-                             depending on the user's role send the user to a different  default-target-url attribute
+                             depending on the user's role 
+                             send the user to a different  default-target-url attribute
                              ref controller that processes /default
                         --&gt;</span>
                         default-target-url="/default"/&gt;
@@ -326,7 +725,7 @@ securiy.xml
   
     <li><a href="/categories/jstl/">jstl</a><small>2</small></li>
   
-    <li><a href="/categories/spring/">spring</a><small>2</small></li>
+    <li><a href="/categories/spring/">spring</a><small>6</small></li>
   
   </ul>
 </div>
@@ -337,11 +736,13 @@ securiy.xml
   <h3 class="title">標籤</h3>
   <ul class="entry">
   
+    <li><a href="/tags/filter/">filter</a><small>2</small></li>
+  
     <li><a href="/tags/jstl/">jstl</a><small>2</small></li>
   
-    <li><a href="/tags/spring-1/">spring</a><small>2</small></li>
+    <li><a href="/tags/spring-1/">spring</a><small>6</small></li>
   
-    <li><a href="/tags/spring_security/">spring_security</a><small>2</small></li>
+    <li><a href="/tags/spring_security/">spring_security</a><small>6</small></li>
   
   </ul>
 </div>
