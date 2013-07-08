@@ -3,13 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>javio's Blog</title>
+  <title>spring_security_simple_example | javio's Blog</title>
   <meta name="author" content="javio">
+  
+  <meta name="description" content="簡單的security 設定檔 
+securiy.xml
+                
+                
+            &lt;!-- auto-config=&quot;true&quot;        使用spring secuirty 一些基本的設定--&gt;
+         ">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="spring_security_simple_example"/>
   <meta property="og:site_name" content="javio's Blog"/>
 
   
@@ -42,8 +49,7 @@
 </nav>
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-  <article class="post">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
   
   <div class="post-content">
     <header>
@@ -53,7 +59,7 @@
       
       
   
-    <h1 class="title"><a href="/2013/07/07/spring_security_simple_example/">spring_security_simple_example</a></h1>
+    <h1 class="title">spring_security_simple_example</h1>
   
 
     </header>
@@ -134,183 +140,42 @@ securiy.xml
     <footer>
       
         
+  
+  <div class="categories">
+    <a href="/categories/spring/">spring</a>
+  </div>
+
         
+  
+  <div class="tags">
+    <a href="/tags/spring_security/">spring_security</a>, <a href="/tags/spring-1/">spring</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
       
       <div class="clearfix"></div>
     </footer>
   </div>
 </article>
 
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-07-06T13:05:41.000Z"><a href="/2013/07/06/spring_security_exception_message/">7月 6 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/07/06/spring_security_exception_message/">get spring security exception message</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>jsp</p>
-<pre><code><figure class="highlight"><pre><span class="xml">                    <span class="pi">&lt;?xml version="</span><span class="number">1.0</span><span class="xml">" encoding="ISO-</span><span class="number">8859</span><span class="xml">-</span><span class="number">1</span><span class="xml">" ?&gt;
-                    <span class="vbscript">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=ISO-</span></span><span class="number">8859</span><span class="xml">-</span><span class="number">1</span><span class="xml">" pageEncoding="ISO-</span><span class="number">8859</span><span class="xml">-</span><span class="number">1</span><span class="xml">"%&gt;
-                    <span class="vbscript">&lt;%@ taglib prefix=<span class="string">"c"</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/core"</span> %&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">c:set</span> <span class="attribute">var</span>=<span class="value">"pageTitle"</span> <span class="attribute">value</span>=<span class="value">"Please Login"</span> <span class="attribute">scope</span>=<span class="value">"request"</span>/&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">c:url</span> <span class="attribute">value</span>=<span class="value">"/login"</span> <span class="attribute">var</span>=<span class="value">"loginUrl"</span>/&gt;</span>
-
-                    //method must post 
-                    <span class="tag">&lt;<span class="title">form</span> <span class="attribute">action</span>=<span class="value">"</span><span class="variable">${loginUrl}</span><span class="xml">" method="post"&gt;
-
-                    // authentication-failure-url attribute, /login/form?error, contains the HTTP parameter error.
-                    <span class="tag">&lt;<span class="title">c:if</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${param.error</span><span class="xml"> != null}"&gt;
-                        <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"alert alert-error"</span>&gt;</span> Failed to login.
-                        <span class="tag">&lt;<span class="title">c:if</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${SPRING_SECURITY_LAST_EXCEPTION</span><span class="xml"> != null}"&gt;
-
-                        // show error message 
-                        Reason: <span class="tag">&lt;<span class="title">c:out</span> <span class="attribute">value</span>=<span class="value">"</span><span class="variable">${SPRING_SECURITY_LAST_EXCEPTION.message}</span><span class="xml">" /&gt;
-                        <span class="tag">&lt;/<span class="title">c:if</span>&gt;</span>
-                        <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-                    <span class="tag">&lt;/<span class="title">c:if</span>&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">c:if</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${param.logout</span><span class="xml"> != null}"&gt;
-                        <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"alert alert-success"</span>&gt;</span>You have been logged out.<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-                    <span class="tag">&lt;/<span class="title">c:if</span>&gt;</span>
-
-
-                    <span class="tag">&lt;<span class="title">label</span> <span class="attribute">for</span>=<span class="value">"username"</span>&gt;</span>Username<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">id</span>=<span class="value">"username"</span> <span class="attribute">name</span>=<span class="value">"username"</span>/&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">label</span> <span class="attribute">for</span>=<span class="value">"password"</span>&gt;</span>Password<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
-                    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"password"</span> <span class="attribute">id</span>=<span class="value">"password"</span> <span class="attribute">name</span>=<span class="value">"password"</span>/&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"form-actions"</span>&gt;</span>
-                        <span class="tag">&lt;<span class="title">input</span> <span class="attribute">id</span>=<span class="value">"submit"</span> <span class="attribute">class</span>=<span class="value">"btn"</span> <span class="attribute">name</span>=<span class="value">"submit"</span> <span class="attribute">type</span>=<span class="value">"submit"</span> <span class="attribute">value</span>=<span class="value">"Login"</span>/&gt;</span>
-                    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-                    <span class="tag">&lt;/<span class="title">form</span>&gt;</span></span>
-</pre></figure></code></pre>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-07-06T13:05:41.000Z"><a href="/2013/07/06/number-format/">7月 6 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/07/06/number-format/">number format</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>number format</p>
-<pre><code><figure class="highlight"><pre>        ....
-        &lt;fmt:formatNumber value=<span class="string">"<span class="subst">${item.PRICE}</span>"</span>  pattern=<span class="string">"#,##0.00"</span>/&gt;
-        ....
-</pre></figure></code></pre>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-07-06T12:33:31.000Z"><a href="/2013/07/06/jslt-application-init-param/">7月 6 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/07/06/jslt-application-init-param/">jslt application init-param</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>1.jstl的if-else</p>
-<pre><code><figure class="highlight"><pre><span class="xml">        <span class="tag">&lt;<span class="title">c:choose</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">c:when</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${initParam</span><span class="xml">['loginStrategy']=='openId'}"&gt;
-            <span class="tag">&lt;<span class="title">jsp:include</span> <span class="attribute">page</span>=<span class="value">"/WEB-INF/jsp/topLoginButton4OpenId.jsp"</span>/&gt;</span>
-            <span class="tag">&lt;/<span class="title">c:when</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">c:otherwise</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">jsp:include</span> <span class="attribute">page</span>=<span class="value">"/WEB-INF/jsp/topLoginButton.jsp"</span>/&gt;</span>
-            <span class="tag">&lt;/<span class="title">c:otherwise</span>&gt;</span>
-        <span class="tag">&lt;/<span class="title">c:choose</span>&gt;</span></span>
-</pre></figure></code></pre>
-<p>2.EL取得initParam
-    web.xml</p>
-<pre><code><figure class="highlight"><pre>    <span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
-        <span class="tag">&lt;<span class="title">web-app</span> <span class="attribute">......</span>
-        <span class="attribute">...</span>    
-            &lt;<span class="attribute">context-param</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">param-name</span>&gt;</span>loginStrategy<span class="tag">&lt;/<span class="title">param-name</span>&gt;</span>
-            <span class="tag">&lt;<span class="title">param-value</span>&gt;</span>openId<span class="tag">&lt;/<span class="title">param-value</span>&gt;</span>
-            <span class="tag">&lt;/<span class="title">context-param</span>&gt;</span> 
-        ...
-        <span class="tag">&lt;/<span class="title">web-app</span>&gt;</span>
-</pre></figure></code></pre>
-<p>--&gt;    ${initParam[&#39;loginStrategy&#39;]
-    &lt;%=application.getInitParameter(&quot;loginStrategy&quot;)%&gt;</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-<nav id="pagination">
-  
-  
-  <div class="clearfix"></div>
-</nav></div></div>
+</div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">

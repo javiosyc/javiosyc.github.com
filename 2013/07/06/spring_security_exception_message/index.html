@@ -6,8 +6,9 @@
   <title>get spring security exception message | javio's Blog</title>
   <meta name="author" content="javio">
   
-  <meta name="description" content="&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot; ?&gt;
-                    &lt;%@ page language=&quot;java&quot; contentType=&quot;tex">
+  <meta name="description" content="jsp
+                    &lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot; ?&gt;
+                    &lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; cha">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -61,25 +62,34 @@
     </header>
     <div class="entry">
       
-        <p>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot; ?&gt;
-                    &lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=ISO-8859-1&quot; pageEncoding=&quot;ISO-8859-1&quot;%&gt;
-                    &lt;%@ taglib prefix=&quot;c&quot; uri=&quot;<a href="http://java.sun.com/jsp/jstl/core">http://java.sun.com/jsp/jstl/core</a>&quot; %&gt;</p>
-<pre><code><figure class="highlight"><pre><span class="xml">                    <span class="tag">&lt;<span class="title">c:set</span> <span class="attribute">var</span>=<span class="value">"pageTitle"</span> <span class="attribute">value</span>=<span class="value">"Please Login"</span> <span class="attribute">scope</span>=<span class="value">"request"</span>/&gt;</span>
+        <p>jsp</p>
+<pre><code><figure class="highlight"><pre><span class="xml">                    <span class="pi">&lt;?xml version="</span><span class="number">1.0</span><span class="xml">" encoding="ISO-</span><span class="number">8859</span><span class="xml">-</span><span class="number">1</span><span class="xml">" ?&gt;
+                    <span class="vbscript">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=ISO-</span></span><span class="number">8859</span><span class="xml">-</span><span class="number">1</span><span class="xml">" pageEncoding="ISO-</span><span class="number">8859</span><span class="xml">-</span><span class="number">1</span><span class="xml">"%&gt;
+                    <span class="vbscript">&lt;%@ taglib prefix=<span class="string">"c"</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/core"</span> %&gt;</span>
+
+                    <span class="tag">&lt;<span class="title">c:set</span> <span class="attribute">var</span>=<span class="value">"pageTitle"</span> <span class="attribute">value</span>=<span class="value">"Please Login"</span> <span class="attribute">scope</span>=<span class="value">"request"</span>/&gt;</span>
 
                     <span class="tag">&lt;<span class="title">c:url</span> <span class="attribute">value</span>=<span class="value">"/login"</span> <span class="attribute">var</span>=<span class="value">"loginUrl"</span>/&gt;</span>
-                <span class="tag">&lt;<span class="title">form</span> <span class="attribute">action</span>=<span class="value">"</span><span class="variable">${loginUrl}</span><span class="xml">" method="post"&gt;
+
+                    //method must post 
+                    <span class="tag">&lt;<span class="title">form</span> <span class="attribute">action</span>=<span class="value">"</span><span class="variable">${loginUrl}</span><span class="xml">" method="post"&gt;
+
+                    // authentication-failure-url attribute, /login/form?error, contains the HTTP parameter error.
                     <span class="tag">&lt;<span class="title">c:if</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${param.error</span><span class="xml"> != null}"&gt;
                         <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"alert alert-error"</span>&gt;</span> Failed to login.
                         <span class="tag">&lt;<span class="title">c:if</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${SPRING_SECURITY_LAST_EXCEPTION</span><span class="xml"> != null}"&gt;
 
-
+                        // show error message 
                         Reason: <span class="tag">&lt;<span class="title">c:out</span> <span class="attribute">value</span>=<span class="value">"</span><span class="variable">${SPRING_SECURITY_LAST_EXCEPTION.message}</span><span class="xml">" /&gt;
                         <span class="tag">&lt;/<span class="title">c:if</span>&gt;</span>
                         <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
                     <span class="tag">&lt;/<span class="title">c:if</span>&gt;</span>
+
                     <span class="tag">&lt;<span class="title">c:if</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${param.logout</span><span class="xml"> != null}"&gt;
                         <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"alert alert-success"</span>&gt;</span>You have been logged out.<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
                     <span class="tag">&lt;/<span class="title">c:if</span>&gt;</span>
+
+
                     <span class="tag">&lt;<span class="title">label</span> <span class="attribute">for</span>=<span class="value">"username"</span>&gt;</span>Username<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
 
                     <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">id</span>=<span class="value">"username"</span> <span class="attribute">name</span>=<span class="value">"username"</span>/&gt;</span>
@@ -90,7 +100,7 @@
                     <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"form-actions"</span>&gt;</span>
                         <span class="tag">&lt;<span class="title">input</span> <span class="attribute">id</span>=<span class="value">"submit"</span> <span class="attribute">class</span>=<span class="value">"btn"</span> <span class="attribute">name</span>=<span class="value">"submit"</span> <span class="attribute">type</span>=<span class="value">"submit"</span> <span class="attribute">value</span>=<span class="value">"Login"</span>/&gt;</span>
                     <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-                <span class="tag">&lt;/<span class="title">form</span>&gt;</span></span>
+                    <span class="tag">&lt;/<span class="title">form</span>&gt;</span></span>
 </pre></figure></code></pre>
 
       
@@ -149,7 +159,7 @@
   
     <li><a href="/categories/jstl/">jstl</a><small>2</small></li>
   
-    <li><a href="/categories/spring/">spring</a><small>1</small></li>
+    <li><a href="/categories/spring/">spring</a><small>2</small></li>
   
   </ul>
 </div>
@@ -162,9 +172,9 @@
   
     <li><a href="/tags/jstl/">jstl</a><small>2</small></li>
   
-    <li><a href="/tags/spring-1/">spring</a><small>1</small></li>
+    <li><a href="/tags/spring-1/">spring</a><small>2</small></li>
   
-    <li><a href="/tags/spring_security/">spring_security</a><small>1</small></li>
+    <li><a href="/tags/spring_security/">spring_security</a><small>2</small></li>
   
   </ul>
 </div>
