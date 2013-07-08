@@ -75,12 +75,29 @@ A single vert.x instance runs inside its own JV">
         -Verticles have isolated classloaders and cnnot shared global satae (static members,global variables etc)
         -can write all code assuming single threading</p>
 <p>Verticles are executed using the same thread</p>
+<p>Every Java verticle must extend the class org.vertx.java.deploy.Verticle. 
+You must override the start method - this is called by Vert.x when the verticle is started.</p>
+<p>Verticle clean-up</p>
+<p>Servers, clients and event bus handlers will be automatically closed when the verticle is stopped. 
+However, if you have any other clean-up logic that you want to execute when the verticle is stopped,
+you can implement a stop method which will be called when the verticle is undeployed.</p>
+<p>Specifying number of instances</p>
+<p>By default, when you deploy a verticle only one instance of the verticle is deployed.
+If you want more than one instance to be deployed, e.g. so you can scale over your cores better,
+you can specify the number of instances as follows:
+    container.deployVerticle(&quot;foo.ChildVerticle&quot;, 10);
+The above example would deploy 10 instances.</p>
 
       
     </div>
     <footer>
       
         
+  
+  <div class="categories">
+    <a href="/categories/vertx/">vertx</a>
+  </div>
+
         
   
   <div class="tags">
@@ -129,6 +146,8 @@ A single vert.x instance runs inside its own JV">
   
     <li><a href="/categories/spring/">spring</a><small>6</small></li>
   
+    <li><a href="/categories/vertx/">vertx</a><small>3</small></li>
+  
   </ul>
 </div>
 
@@ -146,7 +165,7 @@ A single vert.x instance runs inside its own JV">
   
     <li><a href="/tags/spring_security/">spring_security</a><small>6</small></li>
   
-    <li><a href="/tags/vertx/">vert.x</a><small>2</small></li>
+    <li><a href="/tags/vertx/">vert.x</a><small>3</small></li>
   
   </ul>
 </div>
