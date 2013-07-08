@@ -49,6 +49,121 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-07-08T08:55:17.000Z"><a href="/2013/07/08/vertx_concept_eventbox/">7月 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/07/08/vertx_concept_eventbox/">Event Box</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Event Box </p>
+<pre><code><figure class="highlight"><pre><span class="label">Addressing:</span>
+            -String
+            -Dot-style namespacing recommended
+            - e<span class="preprocessor">.g</span>. <span class="string">"messages.inbound.A"</span>
+
+Handler Registration
+            EventBus eb = vertx<span class="preprocessor">.eventbus</span>()<span class="comment">;</span>
+
+            Handler&lt;Message&gt; myHandler = new Handle&lt;Message&gt;() {
+                public boid handle(Message message)
+                System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"received a message "</span> + message)<span class="comment">;</span>
+            }<span class="comment">;</span>
+            eb<span class="preprocessor">.registerHandle</span>(<span class="string">"test.address"</span>,myHandler)<span class="comment">;</span>
+
+Pub/<span class="keyword">Sub</span>
+        -
+P2P
+    Sender :
+            eb<span class="preprocessor">.send</span>(<span class="string">"test.address"</span>,<span class="string">"This is a message"</span> ,new Handler&lt;Message&lt;String&gt;&gt;(){
+                public void handle(Message&lt;String&gt; message) {
+                    System<span class="preprocessor">.our</span><span class="preprocessor">.println</span>(<span class="string">"receuved a reply"</span> + message<span class="preprocessor">.body</span>)<span class="comment">;</span>
+                    }
+                })<span class="comment">;</span>
+
+    Receiver:
+            Handler&lt;Message&lt;String&gt;&gt; myHandler = new Handler&lt;Message&lt;String&gt;&gt;(){
+                public void handle(Message&lt;String&gt; message) {
+                System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"I received a message "</span> +message<span class="preprocessor">.body</span>)<span class="comment">;</span>
+                message<span class="preprocessor">.reply</span>(<span class="string">"This is a reply"</span>)<span class="comment">;</span>
+                }
+            }
+            eb<span class="preprocessor">.registerHandler</span>(<span class="string">"test.address"</span>,myHandler)<span class="comment">;</span>
+
+Message Types 
+             -String 
+             -Primitives
+             -Boxed Primitives
+             -boolean/Boolean
+             -org<span class="preprocessor">.vertx</span><span class="preprocessor">.java</span><span class="preprocessor">.core</span><span class="preprocessor">.json</span><span class="preprocessor">.JsonObject</span>
+             -org<span class="preprocessor">.vertx</span><span class="preprocessor">.java</span><span class="preprocessor">.core</span><span class="preprocessor">.buffer</span><span class="preprocessor">.Buffer</span>
+</pre></figure></code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-07-08T08:27:16.000Z"><a href="/2013/07/08/vertx_concept_verticle/">7月 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/07/08/vertx_concept_verticle/">Verticle</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Verticle
+        -unit of deployment
+        -Script/Java Class</p>
+<p>Verticle run inside a vert.x instance </p>
+<p>A single vert.x instance runs inside its own JVM instance.</p>
+<p>Concuurency
+        -Verticle instance assigned thread/event loop
+        -Verticle instance ALWAYS executes on assigned thread
+        -Verticles have isolated classloaders and cnnot shared global satae (static members,global variables etc)
+        -can write all code assuming single threading</p>
+<p>Verticles are executed using the same thread</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-07-08T06:32:08.000Z"><a href="/2013/07/08/spring_security_filter_2/">7月 8 2013</a></time>
       
       
@@ -743,6 +858,8 @@ securiy.xml
     <li><a href="/tags/spring-1/">spring</a><small>6</small></li>
   
     <li><a href="/tags/spring_security/">spring_security</a><small>6</small></li>
+  
+    <li><a href="/tags/vertx/">vert.x</a><small>2</small></li>
   
   </ul>
 </div>

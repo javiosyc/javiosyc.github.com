@@ -3,16 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>spring_security_service_layer | javio's Blog</title>
+  <title>Event Box | javio's Blog</title>
   <meta name="author" content="javio">
   
-  <meta name="description" content="security.xml
-1.">
+  <meta name="description" content="Event Box 
+Addressing:
+            -String
+            -Dot-style namespacing recommended
+            - e.g. &quot;messages.inbound.A&quot;
+
+Handler Registratio">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="spring_security_service_layer"/>
+  <meta property="og:title" content="Event Box"/>
   <meta property="og:site_name" content="javio's Blog"/>
 
   
@@ -51,33 +56,68 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2013-07-08T03:03:47.000Z"><a href="/2013/07/08/spring_security_service_layer/">7月 8 2013</a></time>
+        <time datetime="2013-07-08T08:55:17.000Z"><a href="/2013/07/08/vertx_concept_eventbox/">7月 8 2013</a></time>
       
       
   
-    <h1 class="title">spring_security_service_layer</h1>
+    <h1 class="title">Event Box</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>security.xml
-1.<security:global-method-security secured-annotations="enabled" /></p>
+        <p>Event Box </p>
+<pre><code><figure class="highlight"><pre><span class="label">Addressing:</span>
+            -String
+            -Dot-style namespacing recommended
+            - e<span class="preprocessor">.g</span>. <span class="string">"messages.inbound.A"</span>
+
+Handler Registration
+            EventBus eb = vertx<span class="preprocessor">.eventbus</span>()<span class="comment">;</span>
+
+            Handler&lt;Message&gt; myHandler = new Handle&lt;Message&gt;() {
+                public boid handle(Message message)
+                System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"received a message "</span> + message)<span class="comment">;</span>
+            }<span class="comment">;</span>
+            eb<span class="preprocessor">.registerHandle</span>(<span class="string">"test.address"</span>,myHandler)<span class="comment">;</span>
+
+Pub/<span class="keyword">Sub</span>
+        -
+P2P
+    Sender :
+            eb<span class="preprocessor">.send</span>(<span class="string">"test.address"</span>,<span class="string">"This is a message"</span> ,new Handler&lt;Message&lt;String&gt;&gt;(){
+                public void handle(Message&lt;String&gt; message) {
+                    System<span class="preprocessor">.our</span><span class="preprocessor">.println</span>(<span class="string">"receuved a reply"</span> + message<span class="preprocessor">.body</span>)<span class="comment">;</span>
+                    }
+                })<span class="comment">;</span>
+
+    Receiver:
+            Handler&lt;Message&lt;String&gt;&gt; myHandler = new Handler&lt;Message&lt;String&gt;&gt;(){
+                public void handle(Message&lt;String&gt; message) {
+                System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"I received a message "</span> +message<span class="preprocessor">.body</span>)<span class="comment">;</span>
+                message<span class="preprocessor">.reply</span>(<span class="string">"This is a reply"</span>)<span class="comment">;</span>
+                }
+            }
+            eb<span class="preprocessor">.registerHandler</span>(<span class="string">"test.address"</span>,myHandler)<span class="comment">;</span>
+
+Message Types 
+             -String 
+             -Primitives
+             -Boxed Primitives
+             -boolean/Boolean
+             -org<span class="preprocessor">.vertx</span><span class="preprocessor">.java</span><span class="preprocessor">.core</span><span class="preprocessor">.json</span><span class="preprocessor">.JsonObject</span>
+             -org<span class="preprocessor">.vertx</span><span class="preprocessor">.java</span><span class="preprocessor">.core</span><span class="preprocessor">.buffer</span><span class="preprocessor">.Buffer</span>
+</pre></figure></code></pre>
 
       
     </div>
     <footer>
       
         
-  
-  <div class="categories">
-    <a href="/categories/spring/">spring</a>
-  </div>
-
         
   
   <div class="tags">
-    <a href="/tags/spring_security/">spring_security</a>, <a href="/tags/spring-1/">spring</a>
+    <a href="/tags/vertx/">vert.x</a>
   </div>
 
         

@@ -3,13 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>filter | javio's Blog</title>
+  <title>Verticle | javio's Blog</title>
   <meta name="author" content="javio">
+  
+  <meta name="description" content="Verticle
+        -unit of deployment
+        -Script/Java Class
+Verticle run inside a vert.x instance 
+A single vert.x instance runs inside its own JV">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="Verticle"/>
   <meta property="og:site_name" content="javio's Blog"/>
 
   
@@ -42,37 +48,69 @@
 </nav>
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-<h2 class="archive-title tag">filter</h2>
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-07-08T08:27:16.000Z"><a href="/2013/07/08/vertx_concept_verticle/">7月 8 2013</a></time>
+      
+      
+  
+    <h1 class="title">Verticle</h1>
+  
 
+    </header>
+    <div class="entry">
+      
+        <p>Verticle
+        -unit of deployment
+        -Script/Java Class</p>
+<p>Verticle run inside a vert.x instance </p>
+<p>A single vert.x instance runs inside its own JVM instance.</p>
+<p>Concuurency
+        -Verticle instance assigned thread/event loop
+        -Verticle instance ALWAYS executes on assigned thread
+        -Verticles have isolated classloaders and cnnot shared global satae (static members,global variables etc)
+        -can write all code assuming single threading</p>
+<p>Verticles are executed using the same thread</p>
 
-  <div class="archive">
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2013-07-08T06:32:08.000Z"><a href="/2013/07/08/spring_security_filter_2/">7月 8 2013</a></time>
-            
-              <h1 class="title"><a href="/2013/07/08/spring_security_filter_2/">logoutFilter</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
-      <article class="post">
-        <div class="post-content">
-          <header>
-            <div class="icon"></div>
-            <time datetime="2013-07-08T05:49:34.000Z"><a href="/2013/07/08/spring_security_filter_1/">7月 8 2013</a></time>
-            
-              <h1 class="title"><a href="/2013/07/08/spring_security_filter_1/">SecurityContextPersistenceFilter</a></h1>
-            
-          </header>
-        </div>
-      </article>
-    
+      
+    </div>
+    <footer>
+      
+        
+        
+  
+  <div class="tags">
+    <a href="/tags/vertx/">vert.x</a>
   </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
