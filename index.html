@@ -49,6 +49,101 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2013-07-09T02:35:04.000Z"><a href="/2013/07/09/guava_optional_1/">7月 9 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/07/09/guava_optional_1/">Guava Optaional</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Using and avoiding null</p>
+<pre><code><figure class="highlight"><pre>    Many <span class="keyword">of</span> <span class="keyword">the</span> cases <span class="keyword">where</span> programmers use null <span class="keyword">is</span> <span class="keyword">to</span> indicate 
+    <span class="keyword">some</span> sort <span class="keyword">of</span> absence: perhaps <span class="keyword">where</span> there might have been a value,
+    there <span class="keyword">is</span> none, <span class="keyword">or</span> one could <span class="keyword">not</span> be found.
+
+    For example, Map.<span class="keyword">get</span> returns null when no value <span class="keyword">is</span> found <span class="keyword">for</span> a key.
+
+
+    Optional&lt;T&gt; <span class="keyword">is</span> a way <span class="keyword">of</span> replacing a nullable T <span class="keyword">reference</span> <span class="keyword">with</span> a non-null value.
+
+
+    An Optional may either <span class="keyword">contain</span> a non-null T <span class="keyword">reference</span> 
+    (<span class="keyword">in</span> which case we <span class="command">say</span> <span class="keyword">the</span> <span class="keyword">reference</span> <span class="keyword">is</span> <span class="string">"present"</span>), 
+    <span class="keyword">or</span> <span class="keyword">it</span> may <span class="keyword">contain</span> nothing (<span class="keyword">in</span> which case we <span class="command">say</span> <span class="keyword">the</span> <span class="keyword">reference</span> <span class="keyword">is</span> <span class="string">"absent"</span>).
+
+    It <span class="keyword">is</span> never said <span class="keyword">to</span> <span class="string">"contain null."</span>
+
+
+
+    Making an Optional
+
+
+    Static method 
+    Optional.<span class="keyword">of</span>(T)        Make an Optional containing <span class="keyword">the</span> <span class="keyword">given</span> non
+                        -null value, <span class="keyword">or</span> fail fast <span class="function_start"><span class="keyword">on</span> <span class="title">null</span></span>.
+                        (java.lang.NullPointerException)
+
+
+    Optional.absent()    Return an absent Optional <span class="keyword">of</span> <span class="keyword">some</span> type.
+<span class="command">
+                        return</span> rs.next() ? rs.getString(<span class="string">"nickname"</span>) : null;
+                        ==&gt;
+<span class="command">                        return</span> rs.next() ? Optional.<span class="keyword">of</span>(rs.getString(<span class="string">"nickname"</span>)) : Optional.absent();
+
+    Optional.fromNullable(T)    Turn <span class="keyword">the</span> <span class="keyword">given</span> possibly-null <span class="keyword">reference</span> <span class="keyword">into</span> an Optional,
+                                treating non-null <span class="keyword">as</span> present <span class="keyword">and</span> null <span class="keyword">as</span> absent.
+
+                        許多程式庫中使用了不少 null，Guava 提供fromNullabe(T)用來銜接程式庫中 null 的方法
+
+                        String nickName = Optional.fromNullable(getNickName(<span class="string">"Duke"</span>)).<span class="keyword">or</span>(<span class="string">"CoDeData User"</span>);
+
+
+
+    Query methods
+
+    non-static methods 
+
+    <span class="type">boolean</span> isPresent()    Returns <span class="constant">true</span> <span class="keyword">if</span> this Optional <span class="keyword">contains</span> a non-null instance.
+    T <span class="keyword">get</span>()                Returns <span class="keyword">the</span> contained T instance, which must be present;
+                        otherwise, throws an IllegalStateException.
+
+    T <span class="keyword">or</span>(T)                Returns <span class="keyword">the</span> present value <span class="keyword">in</span> this Optional,
+                        <span class="keyword">or</span> <span class="keyword">if</span> there <span class="keyword">is</span> none, returns <span class="keyword">the</span> specified default.
+
+                        String nickName = Optional.fromNullable(getNickName(<span class="string">"Duke"</span>)).<span class="keyword">or</span>(<span class="string">"CoDeData User"</span>);
+
+    T orNull()            Returns <span class="keyword">the</span> present value <span class="keyword">in</span> this Optional, <span class="keyword">or</span> <span class="keyword">if</span> there <span class="keyword">is</span> none, returns null.
+                        The inverse operation <span class="keyword">of</span> fromNullable.
+
+                        String nickName = Optional.fromNullable(getNickName(<span class="string">"Duke"</span>)).orNull();
+
+    Set&lt;T&gt; asSet()        Returns an immutable singleton Set containing <span class="keyword">the</span> instance <span class="keyword">in</span> this Optional,
+                        <span class="keyword">if</span> there <span class="keyword">is</span> one, <span class="keyword">or</span> otherwise an empty immutable <span class="keyword">set</span>.
+</pre></figure></code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  <article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2013-07-08T14:03:20.000Z"><a href="/2013/07/08/vertx_common_util/">7月 8 2013</a></time>
       
       
@@ -778,77 +873,6 @@ securiy.xml
 
 
 
-  <article class="post">
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2013-07-06T13:05:41.000Z"><a href="/2013/07/06/spring_security_exception_message/">7月 6 2013</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2013/07/06/spring_security_exception_message/">get spring security exception message</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>jsp</p>
-<pre><code><figure class="highlight"><pre><span class="xml">                    <span class="pi">&lt;?xml version="</span><span class="number">1.0</span><span class="xml">" encoding="ISO-</span><span class="number">8859</span><span class="xml">-</span><span class="number">1</span><span class="xml">" ?&gt;
-                    <span class="vbscript">&lt;%@ page language=<span class="string">"java"</span> contentType=<span class="string">"text/html; charset=ISO-</span></span><span class="number">8859</span><span class="xml">-</span><span class="number">1</span><span class="xml">" pageEncoding="ISO-</span><span class="number">8859</span><span class="xml">-</span><span class="number">1</span><span class="xml">"%&gt;
-                    <span class="vbscript">&lt;%@ taglib prefix=<span class="string">"c"</span> uri=<span class="string">"http://java.sun.com/jsp/jstl/core"</span> %&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">c:set</span> <span class="attribute">var</span>=<span class="value">"pageTitle"</span> <span class="attribute">value</span>=<span class="value">"Please Login"</span> <span class="attribute">scope</span>=<span class="value">"request"</span>/&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">c:url</span> <span class="attribute">value</span>=<span class="value">"/login"</span> <span class="attribute">var</span>=<span class="value">"loginUrl"</span>/&gt;</span>
-
-                    //method must post 
-                    <span class="tag">&lt;<span class="title">form</span> <span class="attribute">action</span>=<span class="value">"</span><span class="variable">${loginUrl}</span><span class="xml">" method="post"&gt;
-
-                    // authentication-failure-url attribute, /login/form?error, contains the HTTP parameter error.
-                    <span class="tag">&lt;<span class="title">c:if</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${param.error</span><span class="xml"> != null}"&gt;
-                        <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"alert alert-error"</span>&gt;</span> Failed to login.
-                        <span class="tag">&lt;<span class="title">c:if</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${SPRING_SECURITY_LAST_EXCEPTION</span><span class="xml"> != null}"&gt;
-
-                        // show error message 
-                        Reason: <span class="tag">&lt;<span class="title">c:out</span> <span class="attribute">value</span>=<span class="value">"</span><span class="variable">${SPRING_SECURITY_LAST_EXCEPTION.message}</span><span class="xml">" /&gt;
-                        <span class="tag">&lt;/<span class="title">c:if</span>&gt;</span>
-                        <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-                    <span class="tag">&lt;/<span class="title">c:if</span>&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">c:if</span> <span class="attribute">test</span>=<span class="value">"</span><span class="variable">${param.logout</span><span class="xml"> != null}"&gt;
-                        <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"alert alert-success"</span>&gt;</span>You have been logged out.<span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-                    <span class="tag">&lt;/<span class="title">c:if</span>&gt;</span>
-
-
-                    <span class="tag">&lt;<span class="title">label</span> <span class="attribute">for</span>=<span class="value">"username"</span>&gt;</span>Username<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"text"</span> <span class="attribute">id</span>=<span class="value">"username"</span> <span class="attribute">name</span>=<span class="value">"username"</span>/&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">label</span> <span class="attribute">for</span>=<span class="value">"password"</span>&gt;</span>Password<span class="tag">&lt;/<span class="title">label</span>&gt;</span>
-                    <span class="tag">&lt;<span class="title">input</span> <span class="attribute">type</span>=<span class="value">"password"</span> <span class="attribute">id</span>=<span class="value">"password"</span> <span class="attribute">name</span>=<span class="value">"password"</span>/&gt;</span>
-
-                    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"form-actions"</span>&gt;</span>
-                        <span class="tag">&lt;<span class="title">input</span> <span class="attribute">id</span>=<span class="value">"submit"</span> <span class="attribute">class</span>=<span class="value">"btn"</span> <span class="attribute">name</span>=<span class="value">"submit"</span> <span class="attribute">type</span>=<span class="value">"submit"</span> <span class="attribute">value</span>=<span class="value">"Login"</span>/&gt;</span>
-                    <span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-                    <span class="tag">&lt;/<span class="title">form</span>&gt;</span></span>
-</pre></figure></code></pre>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
 
 <nav id="pagination">
   
@@ -870,6 +894,8 @@ securiy.xml
   <h3 class="title">分類</h3>
   <ul class="entry">
   
+    <li><a href="/categories/guava/">guava</a><small>1</small></li>
+  
     <li><a href="/categories/jstl/">jstl</a><small>2</small></li>
   
     <li><a href="/categories/spring/">spring</a><small>6</small></li>
@@ -886,6 +912,8 @@ securiy.xml
   <ul class="entry">
   
     <li><a href="/tags/filter/">filter</a><small>2</small></li>
+  
+    <li><a href="/tags/guava/">guava</a><small>1</small></li>
   
     <li><a href="/tags/jstl/">jstl</a><small>2</small></li>
   

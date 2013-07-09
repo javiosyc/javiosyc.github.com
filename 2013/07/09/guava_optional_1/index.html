@@ -1,0 +1,243 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Guava Optaional | javio's Blog</title>
+  <meta name="author" content="javio">
+  
+  <meta name="description" content="Using and avoiding null
+    Many of the cases where programmers use null is to indicate 
+    some sort of absence: perhaps where there might have been">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Guava Optaional"/>
+  <meta property="og:site_name" content="javio's Blog"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="javio's Blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">javio's Blog</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-07-09T02:35:04.000Z"><a href="/2013/07/09/guava_optional_1/">7月 9 2013</a></time>
+      
+      
+  
+    <h1 class="title">Guava Optaional</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Using and avoiding null</p>
+<pre><code><figure class="highlight"><pre>    Many <span class="keyword">of</span> <span class="keyword">the</span> cases <span class="keyword">where</span> programmers use null <span class="keyword">is</span> <span class="keyword">to</span> indicate 
+    <span class="keyword">some</span> sort <span class="keyword">of</span> absence: perhaps <span class="keyword">where</span> there might have been a value,
+    there <span class="keyword">is</span> none, <span class="keyword">or</span> one could <span class="keyword">not</span> be found.
+
+    For example, Map.<span class="keyword">get</span> returns null when no value <span class="keyword">is</span> found <span class="keyword">for</span> a key.
+
+
+    Optional&lt;T&gt; <span class="keyword">is</span> a way <span class="keyword">of</span> replacing a nullable T <span class="keyword">reference</span> <span class="keyword">with</span> a non-null value.
+
+
+    An Optional may either <span class="keyword">contain</span> a non-null T <span class="keyword">reference</span> 
+    (<span class="keyword">in</span> which case we <span class="command">say</span> <span class="keyword">the</span> <span class="keyword">reference</span> <span class="keyword">is</span> <span class="string">"present"</span>), 
+    <span class="keyword">or</span> <span class="keyword">it</span> may <span class="keyword">contain</span> nothing (<span class="keyword">in</span> which case we <span class="command">say</span> <span class="keyword">the</span> <span class="keyword">reference</span> <span class="keyword">is</span> <span class="string">"absent"</span>).
+
+    It <span class="keyword">is</span> never said <span class="keyword">to</span> <span class="string">"contain null."</span>
+
+
+
+    Making an Optional
+
+
+    Static method 
+    Optional.<span class="keyword">of</span>(T)        Make an Optional containing <span class="keyword">the</span> <span class="keyword">given</span> non
+                        -null value, <span class="keyword">or</span> fail fast <span class="function_start"><span class="keyword">on</span> <span class="title">null</span></span>.
+                        (java.lang.NullPointerException)
+
+
+    Optional.absent()    Return an absent Optional <span class="keyword">of</span> <span class="keyword">some</span> type.
+<span class="command">
+                        return</span> rs.next() ? rs.getString(<span class="string">"nickname"</span>) : null;
+                        ==&gt;
+<span class="command">                        return</span> rs.next() ? Optional.<span class="keyword">of</span>(rs.getString(<span class="string">"nickname"</span>)) : Optional.absent();
+
+    Optional.fromNullable(T)    Turn <span class="keyword">the</span> <span class="keyword">given</span> possibly-null <span class="keyword">reference</span> <span class="keyword">into</span> an Optional,
+                                treating non-null <span class="keyword">as</span> present <span class="keyword">and</span> null <span class="keyword">as</span> absent.
+
+                        許多程式庫中使用了不少 null，Guava 提供fromNullabe(T)用來銜接程式庫中 null 的方法
+
+                        String nickName = Optional.fromNullable(getNickName(<span class="string">"Duke"</span>)).<span class="keyword">or</span>(<span class="string">"CoDeData User"</span>);
+
+
+
+    Query methods
+
+    non-static methods 
+
+    <span class="type">boolean</span> isPresent()    Returns <span class="constant">true</span> <span class="keyword">if</span> this Optional <span class="keyword">contains</span> a non-null instance.
+    T <span class="keyword">get</span>()                Returns <span class="keyword">the</span> contained T instance, which must be present;
+                        otherwise, throws an IllegalStateException.
+
+    T <span class="keyword">or</span>(T)                Returns <span class="keyword">the</span> present value <span class="keyword">in</span> this Optional,
+                        <span class="keyword">or</span> <span class="keyword">if</span> there <span class="keyword">is</span> none, returns <span class="keyword">the</span> specified default.
+
+                        String nickName = Optional.fromNullable(getNickName(<span class="string">"Duke"</span>)).<span class="keyword">or</span>(<span class="string">"CoDeData User"</span>);
+
+    T orNull()            Returns <span class="keyword">the</span> present value <span class="keyword">in</span> this Optional, <span class="keyword">or</span> <span class="keyword">if</span> there <span class="keyword">is</span> none, returns null.
+                        The inverse operation <span class="keyword">of</span> fromNullable.
+
+                        String nickName = Optional.fromNullable(getNickName(<span class="string">"Duke"</span>)).orNull();
+
+    Set&lt;T&gt; asSet()        Returns an immutable singleton Set containing <span class="keyword">the</span> instance <span class="keyword">in</span> this Optional,
+                        <span class="keyword">if</span> there <span class="keyword">is</span> one, <span class="keyword">or</span> otherwise an empty immutable <span class="keyword">set</span>.
+</pre></figure></code></pre>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/guava/">guava</a>
+  </div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/guava/">guava</a>
+  </div>
+
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="搜尋">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">分類</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/guava/">guava</a><small>1</small></li>
+  
+    <li><a href="/categories/jstl/">jstl</a><small>2</small></li>
+  
+    <li><a href="/categories/spring/">spring</a><small>6</small></li>
+  
+    <li><a href="/categories/vertx/">vertx</a><small>3</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">標籤</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/filter/">filter</a><small>2</small></li>
+  
+    <li><a href="/tags/guava/">guava</a><small>1</small></li>
+  
+    <li><a href="/tags/jstl/">jstl</a><small>2</small></li>
+  
+    <li><a href="/tags/spring-1/">spring</a><small>6</small></li>
+  
+    <li><a href="/tags/spring_security/">spring_security</a><small>6</small></li>
+  
+    <li><a href="/tags/vertx/">vert.x</a><small>3</small></li>
+  
+  </ul>
+</div>
+
+
+  
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2013 javio
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
